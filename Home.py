@@ -7,7 +7,8 @@ p.init()
 
 SCREEN = p.display.set_mode((512,512))
 
-p.display.set_caption("Menu")
+p.display.set_caption("GAME")
+p.display.set_icon(p.image.load("assets/piece/bN.png"))
 
 BG = p.image.load("assets/Home/Background-512width.jpg")
 

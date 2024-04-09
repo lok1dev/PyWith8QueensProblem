@@ -12,6 +12,7 @@ RESULTS_FOLDER = "results"
 placed_pieces = []  # List to store user-placed pieces
 
 p.display.set_caption("Eight Queens")
+p.display.set_icon(p.image.load("assets/piece/bQ.png"))
 
 def loadImages():
     pieces = ['wQ']

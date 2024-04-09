@@ -10,47 +10,15 @@ IMAGES = {}
 
 p.display.set_caption("Knight's Tour")
 
+p.display.set_icon(p.image.load("assets/piece/bN.png"))
+
 def loadImages():
-    pieces = ['wN', 'x.jpg']  # Thêm 'x.jpg' vào danh sách ảnh cần tải
+    pieces = ['wN', 'x.png']  # Thêm 'x.jpg' vào danh sách ảnh cần tải
     for piece in pieces:
-        if piece == 'x.jpg':
-            IMAGES[piece] = p.transform.scale(p.image.load("assets/piece/" + piece), (SQ_SIZE // 2, SQ_SIZE // 2))
+        if piece == 'x.png':
+            IMAGES[piece] = p.transform.scale(p.image.load("assets/piece/" + piece), (SQ_SIZE, SQ_SIZE))
         else:
             IMAGES[piece] = p.transform.scale(p.image.load("assets/piece/" + piece + ".png"), (SQ_SIZE, SQ_SIZE))
-
-def main():
-    p.init()
-    screen = p.display.set_mode((WIDTH, HEIGHT))
-    clock = p.time.Clock()
-    screen.fill(p.Color("white"))
-    gs = ChessEngine.GameState()
-    loadImages()
-    running = True
-    knight_tour_started = False
-    knight_position = None
-    knight_tour_path = None
-
-
-    while running:
-        for e in p.event.get():
-            if e.type == p.QUIT:
-                running = False
-            elif e.type == p.MOUSEBUTTONDOWN:
-                if not knight_tour_started:
-                    col = e.pos[0] // SQ_SIZE
-                    row = e.pos[1] // SQ_SIZE
-                    if 0 <= col < DIMENSION and 0 <= row < DIMENSION:
-                        gs.board[row][col] = 'wN'
-                        knight_position = (row, col)
-                        knight_tour_started = True
-                        knight_tour_path = knight_tour(gs, knight_position)
-        drawGameState(screen, gs)
-        if knight_tour_started:
-            drawKnightTour(screen, knight_tour_path,gs)
-            running = False  # Dừng chương trình sau khi quân mã đã di chuyển một vòng
-            
-        clock.tick(MAX_FPS)
-        p.display.flip()
 
 def knight_tour(gs, start):
     path = []
@@ -96,9 +64,43 @@ def drawKnightTour(screen, path,gs):
         p.display.flip()
         p.time.wait(300)
         # Đánh dấu nơi đã đi qua bằng ký tự 'X'
-        gs.board[r][c] = 'x.jpg'
+        gs.board[r][c] = 'x.png'
         drawGameState(screen, gs)
 
+
+def main():
+    p.init()
+    screen = p.display.set_mode((WIDTH, HEIGHT))
+    clock = p.time.Clock()
+    screen.fill(p.Color("white"))
+    gs = ChessEngine.GameState()
+    loadImages()
+    running = True
+    knight_tour_started = False
+    knight_position = None
+    knight_tour_path = None
+
+
+    while running:
+        for e in p.event.get():
+            if e.type == p.QUIT:
+                running = False
+            elif e.type == p.MOUSEBUTTONDOWN:
+                if not knight_tour_started:
+                    col = e.pos[0] // SQ_SIZE
+                    row = e.pos[1] // SQ_SIZE
+                    if 0 <= col < DIMENSION and 0 <= row < DIMENSION:
+                        gs.board[row][col] = 'wN'
+                        knight_position = (row, col)
+                        knight_tour_started = True
+                        knight_tour_path = knight_tour(gs, knight_position)
+        drawGameState(screen, gs)
+        if knight_tour_started:
+            drawKnightTour(screen, knight_tour_path,gs)
+            running = False  # Dừng chương trình sau khi quân mã đã di chuyển một vòng
+            
+        clock.tick(MAX_FPS)
+        p.display.flip()
 
 if __name__ == "__main__":
     main()
