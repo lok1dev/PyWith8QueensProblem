@@ -13,7 +13,7 @@ p.display.set_caption("Knight's Tour")
 p.display.set_icon(p.image.load("assets/piece/bN.png"))
 
 def loadImages():
-    pieces = ['wN', 'x.png']  # Thêm 'x.jpg' vào danh sách ảnh cần tải
+    pieces = ['wN', 'x.png']
     for piece in pieces:
         if piece == 'x.png':
             IMAGES[piece] = p.transform.scale(p.image.load("assets/piece/" + piece), (SQ_SIZE, SQ_SIZE))
@@ -57,29 +57,34 @@ def drawPieces(screen, board):
             if piece !='--':
                 screen.blit(IMAGES[piece], p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
-def drawKnightTour(screen, path,gs):
+def drawKnightTour(screen, path, gs):
     for move in path:
         r, c = move
         screen.blit(IMAGES['wN'], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
         p.display.flip()
         p.time.wait(300)
-        # Đánh dấu nơi đã đi qua bằng ký tự 'X'
         gs.board[r][c] = 'x.png'
         drawGameState(screen, gs)
 
+def showMessage(screen, message):
+    p.font.init()
+    font = p.font.SysFont('Arial', 30)
+    text = font.render(message, True, p.Color('red'))
+    text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+    screen.blit(text, text_rect)
+    p.display.flip()
 
 def main():
     p.init()
     screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
-    gs = ChessEngine.GameState()
+    gs = ChessEngine.GameState()  # Assuming you have the ChessEngine module implemented
     loadImages()
     running = True
     knight_tour_started = False
     knight_position = None
     knight_tour_path = None
-
 
     while running:
         for e in p.event.get():
@@ -94,13 +99,26 @@ def main():
                         knight_position = (row, col)
                         knight_tour_started = True
                         knight_tour_path = knight_tour(gs, knight_position)
+
         drawGameState(screen, gs)
         if knight_tour_started:
-            drawKnightTour(screen, knight_tour_path,gs)
-            running = False  # Dừng chương trình sau khi quân mã đã di chuyển một vòng
-            
+            drawKnightTour(screen, knight_tour_path, gs)
+            running = False
+            showMessage(screen, "No Solution")
+
         clock.tick(MAX_FPS)
         p.display.flip()
+
+    # Handle exit
+    while True:
+        for e in p.event.get():
+            if e.type == p.QUIT:
+                p.quit()
+                return
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_RETURN:  # User pressed Enter
+                    p.quit()
+                    return
 
 if __name__ == "__main__":
     main()
