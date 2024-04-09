@@ -1,18 +1,19 @@
-import pygame as p, sys
+import pygame as p
+import sys
 from button import Button
-import EightQueens 
+import EightQueens
 import KnightTour
 
 p.init()
 
-SCREEN = p.display.set_mode((512,512))
+SCREEN = p.display.set_mode((512, 512))
 
 p.display.set_caption("GAME")
 p.display.set_icon(p.image.load("assets/piece/bN.png"))
 
 BG = p.image.load("assets/Home/Background-512width.jpg")
 
-def get_font(size): # Returns Press-Start-2P in the desired size
+def get_font(size):
     return p.font.Font("assets/font.ttf", size)
 
 def Eight_Queens():

@@ -9,9 +9,9 @@ MAX_FPS = 30
 IMAGES = {}
 
 p.display.set_caption("Knight's Tour")
-
 p.display.set_icon(p.image.load("assets/piece/bN.png"))
 
+# Loads and scales chess piece images from the assets folder.
 def loadImages():
     pieces = ['wN', 'x.png']
     for piece in pieces:
@@ -20,6 +20,7 @@ def loadImages():
         else:
             IMAGES[piece] = p.transform.scale(p.image.load("assets/piece/" + piece + ".png"), (SQ_SIZE, SQ_SIZE))
 
+# Draws the chess board
 def knight_tour(gs, start):
     path = []
     path.append(start)
@@ -39,10 +40,12 @@ def knight_tour(gs, start):
             break
     return path
 
+# Draws the chess board
 def drawGameState(screen, gs):
     drawBoard(screen)
     drawPieces(screen, gs.board)
 
+# Draws the chess board
 def drawBoard(screen):
     colors = [p.Color("white"), p.Color("gray")]
     for r in range(DIMENSION):
@@ -50,6 +53,7 @@ def drawBoard(screen):
             color = colors[((r+c) % 2)]
             p.draw.rect(screen, color, p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
+# Draws the chess pieces
 def drawPieces(screen, board):
     for r in range(DIMENSION):
         for c in range(DIMENSION):
@@ -57,6 +61,7 @@ def drawPieces(screen, board):
             if piece !='--':
                 screen.blit(IMAGES[piece], p.Rect(c*SQ_SIZE, r*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
+# Draws the knight's tour
 def drawKnightTour(screen, path, gs):
     for move in path:
         r, c = move
@@ -66,9 +71,10 @@ def drawKnightTour(screen, path, gs):
         gs.board[r][c] = 'x.png'
         drawGameState(screen, gs)
 
+# Shows a message on the screen
 def showMessage(screen, message):
     p.font.init()
-    font = p.font.SysFont('Arial', 30)
+    font = p.font.SysFont('Arial', 40)
     text = font.render(message, True, p.Color('red'))
     text_rect = text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
     screen.blit(text, text_rect)
@@ -79,7 +85,7 @@ def main():
     screen = p.display.set_mode((WIDTH, HEIGHT))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
-    gs = ChessEngine.GameState()  # Assuming you have the ChessEngine module implemented
+    gs = ChessEngine.GameState()
     loadImages()
     running = True
     knight_tour_started = False
