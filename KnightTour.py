@@ -70,6 +70,8 @@ def showMessage(screen, message):
     screen.blit(text, text_rect)
     p.display.flip()
 
+
+
 def main():
     p.init()
     screen = p.display.set_mode((WIDTH, HEIGHT))

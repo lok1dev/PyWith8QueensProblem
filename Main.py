@@ -1,26 +1,32 @@
 import pygame as p
 import sys
-import EightQueens 
-import KnightTour 
+import EightQueens
+import KnightTour
 from button import Button
 
+# Initialize Pygame
 p.init()
 
+# Screen settings
 SCREEN = p.display.set_mode((512, 512))
 p.display.set_caption("GAME")
 p.display.set_icon(p.image.load("assets/piece/bN.png"))
 BG = p.image.load("assets/Home/Background-512width.jpg")
 
+# Font settings
 def get_font(size):
     return p.font.Font("assets/font.ttf", size)
 
+# Clear the screen
 def clear_screen():
     SCREEN.fill((0, 0, 0))
 
+# Create a button
 def create_button(image_path, pos, text_input, font, base_color, hovering_color):
     return Button(image=p.image.load(image_path), pos=pos, text_input=text_input,
                   font=font, base_color=base_color, hovering_color=hovering_color)
 
+# Home menu
 def home_menu():
     while True:
         clear_screen()
@@ -57,6 +63,7 @@ def home_menu():
 
         p.display.update()
 
+# Queen menu
 def queen_menu():
     while True:
         clear_screen()
@@ -83,14 +90,18 @@ def queen_menu():
                 sys.exit()
             if event.type == p.MOUSEBUTTONDOWN:
                 if buttons[0].checkForInput(QUEEN_MOUSE_POS):
+                    p.time.delay(100)
+                    p.event.clear()
                     EightQueens.main(new_game=True)
                     queen_menu()
                 if buttons[1].checkForInput(QUEEN_MOUSE_POS):
+                    p.time.delay(100)
+                    p.event.clear()
                     EightQueens.main()
                 if buttons[2].checkForInput(QUEEN_MOUSE_POS):
                     home_menu()
 
         p.display.update()
 
-
+# Start the game
 home_menu()
